@@ -26,6 +26,7 @@ def xss():
               <li><a href="/xss1?name=Thor">Level 1: Helppoa kuin heinänteko!</a></li>
               <li><a href="/xss2?name=Freyja">Level 2: Vasen käsi selän takana..</a></li>
               <li><a href="/xss3?name=Frigg">Level 3: Ei vieläkään vaikeaa..</a></li>
+              <li><a href="/xss4?name=Odin">Level 4: Joko hikoiluttaa?</a></li>
             </ul>
             </body></html>
            """
@@ -42,16 +43,22 @@ def xss1():
          """
   return f + g
 
-@app.route("/xss2")
-def xss2():
-  with open('xss2.html', 'r') as myfile:
+def template(fname):
+  with open(fname, 'r') as myfile:
     data=myfile.read().replace('\n', '')
   content=re.sub('\$name', request.args.get('name'), data)
   return content
 
+@app.route("/xss2")
+def xss2():
+  return template('xss2.html')
+
 @app.route("/xss3")
 def xss3():
-  with open('xss3.html', 'r') as myfile:
-    data=myfile.read().replace('\n', '')
-  content=re.sub('\$name', request.args.get('name'), data)
-  return content
+  return template('xss3.html')
+
+@app.route("/xss4")
+def xss4():
+  return template('xss4.html')
+
+

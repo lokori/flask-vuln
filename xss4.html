@@ -1,4 +1,5 @@
 <html><body>
+
 Mighty <div id='namediv'></div>, compose your email now:
 
 <form>To: <input type='text'></input><br>                                                                                                          
@@ -8,7 +9,8 @@ Mighty <div id='namediv'></div>, compose your email now:
 </form>
 
 <script>
-  document.getElementById('namediv').append("$name");
+  var urlparser = new URLSearchParams(window.location.search);
+  document.getElementById('namediv').innerHTML = urlparser.get('name');
 </script>
 
 </body></html>
