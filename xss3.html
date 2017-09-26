@@ -1,0 +1,20 @@
+<html><body>
+<script>
+  /* for debug, remove from production */
+  console.log('name = $name');
+</script>
+
+Mighty <div id='namediv'></div>, compose your email now:'
+
+<form>To: <input type='text'></input><br>                                                                                                          
+  Subject: <input type='text'></input><br>                                                                                                           
+  Content: <textarea></textarea><br>                                                                                                                 
+  <input type="button" value="Send!"/>                                                                                                               
+</form>
+
+<script>
+  var urlparser = new URLSearchParams(window.location.search);
+  document.getElementById('namediv').innerHTML = urlparser.get('name');
+</script>
+
+</body></html>
