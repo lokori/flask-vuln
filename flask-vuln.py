@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from flask import Flask, request
+from flask import Flask, request, redirect
 import re
 
 app = Flask(__name__)
@@ -8,9 +8,10 @@ app = Flask(__name__)
 @app.route("/")
 def xss():
     return """<html><body>Hark mortal!<br>
-            This is a simple XSS workshop. In each case, the vulnerable parameter is <i><b>name</b></i><br>
+
+            This is <b>flask-vuln.py</b>, a simple target application for a hacking workshop. In each case, the vulnerable parameter is <i><b>name</b></i>, unless specified otherwise.<br>
             <script>
-            var msg = "Hello Brave Hacker! Your mission, should you choose to accept it, is to find and exploit XSS vulnerabilities in this application. The links to challenges are provided here." + 
+            var msg = "Hello Brave Hacker! Your mission, should you choose to accept it, is to find and exploit vulnerabilities in this application. The links to challenges are provided here." + 
             "As always, should you or any of your Hacking Force be caught or killed, the Instructor will disavow any knowledge of your actions. This HTML document will not self-destruct in five/ten seconds. Good luck, Brave Hacker.";
             
             if (typeof(window.SpeechSynthesisUtterance) == 'undefined') {
@@ -27,10 +28,26 @@ def xss():
               <li><a href="/xss2?name=Freyja">Level 2: Vasen käsi selän takana..</a></li>
               <li><a href="/xss3?name=Frigg">Level 3: Ei vieläkään vaikeaa..</a></li>
               <li><a href="/xss4?name=Odin">Level 4: Joko hikoiluttaa?</a></li>
+              <li><a href="/mystery?name=http://localhost:5000">Mystery level</a></li>
+              <!-- <li><a href="/bonus?name=xss2.html">Hidden bonus level. <b>No alert(0)!</b>. Instead look for the deepest secret.</a></li> -->
             </ul>
             </body></html>
            """
-  
+
+
+# Notice: this may be extremely dangerous if you are running this on your own computer.
+@app.route("/bonus")
+def bonus():
+  fname = request.args.get('name')
+  fname = re.sub('[\/*?]','',fname)
+  with open(fname, 'r') as myfile:
+    data=myfile.read().replace('\n', '')
+  return data
+
+@app.route("/mystery")
+def mystery():
+  return redirect(request.args.get('name'), code=302)
+
 @app.route("/xss1")
 def xss1():
   f = '<html><body>Mighty ' + request.args.get('name') + ', compose your email now:'
@@ -44,9 +61,10 @@ def xss1():
   return f + g
 
 def template(fname):
+  name=request.args.get('name','')
   with open(fname, 'r') as myfile:
     data=myfile.read().replace('\n', '')
-  content=re.sub('\$name', request.args.get('name'), data)
+  content=re.sub('\$name', name, data)
   return content
 
 @app.route("/xss2")
@@ -61,4 +79,6 @@ def xss3():
 def xss4():
   return template('xss4.html')
 
-
+@app.route("/deepest-secret")
+def innermystery():
+  return template('innermystery.txt')

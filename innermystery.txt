@@ -1,0 +1,4 @@
+Congratulations! You have now cracked even the deepest secret.
+
+Perhaps now go try https://alf.nu/alert(1) for more difficult XSS puzzles.
+
