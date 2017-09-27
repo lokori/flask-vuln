@@ -1,0 +1,31 @@
+<html><body>
+
+Mighty <div id='namediv'></div>, compose your email now:
+
+<form>To: <input type='text'></input><br>
+  Subject: <input type='text'></input><br>
+  Content: <textarea></textarea><br>
+  <input type="button" value="Send!"/>
+</form>
+
+<!-- TODO: future, will get additional metadata from backend in JSON -->
+<script>
+  var urlparser = new URLSearchParams(window.location.search);
+  name = urlparser.get('name');
+
+  const xhr = new XMLHttpRequest();
+  xhr.open('GET', 'myson?name=' + name);
+
+  /* TODO: our API is still responding wrong MIME type :( Must fix security. */
+  xhr.responseType = 'json';
+
+  xhr.onload = function(e) {
+  if (this.status == 200) {
+    document.getElementById('namediv').innerHTML = this.response.name;
+    console.log('response', this.response);
+    }
+  };
+  xhr.send();
+</script>
+
+</body></html>
