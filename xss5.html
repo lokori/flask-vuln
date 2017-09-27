@@ -11,7 +11,7 @@ Mighty <div id='namediv'></div>, compose your email now:
 <!-- TODO: future, will get additional metadata from backend in JSON -->
 <script>
   var urlparser = new URLSearchParams(window.location.search);
-  name = urlparser.get('name');
+  var name = urlparser.get('name');
 
   const xhr = new XMLHttpRequest();
   xhr.open('GET', 'myson?name=' + name);
