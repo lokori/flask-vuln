@@ -11,7 +11,11 @@ Should you use it, please take note:
 2. ```export FLASK_APP=flask-vuln.py```
 3. ```flask run```
 
+Or use ```run.sh```.
+
 Enjoy the puzzles at ```http://localhost:5000```
+
+If you run this for other people, somewhere, you should add ```--host=0.0.0.0``` to flask command parameters to listen for all IP addresses. Please understand that doing so puts the machine at risk where you run this application and take appropriate measures.
 
 
 # About vulnerability scanners
