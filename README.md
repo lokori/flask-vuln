@@ -13,6 +13,12 @@ Should you use it, please take note:
 
 Enjoy the puzzles at ```http://localhost:5000```
 
+
+# About vulnerability scanners
+
+People should try to solve and figure out this manually. Running [OWASP ZAP](https://www.owasp.org/index.php/OWASP_Zed_Attack_Proxy_Project) will immediately reveal most of the vulnerabilities on this application (as you can expect, given that this is intentionally a soft target for practice) taking all the learning out of the experience.
+
+
 # License
 
 See [LICENSE](LICENSE)
