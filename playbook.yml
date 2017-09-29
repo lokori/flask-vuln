@@ -1,0 +1,36 @@
+- hosts: webservers
+  gather_facts: False
+  remote_user: ubuntu
+  tasks:
+  - name: install python 2
+    become: true
+    raw: test -e /usr/bin/python || (apt -y update && apt install -y python-minimal)
+
+  - name: ensure system packages are at the latest version
+    apt: pkg={{item}} state=latest update_cache=yes cache_valid_time=3600
+    become: true
+    with_items:
+    - git
+    - python
+    - python-pip
+
+  - name: install flask and gunicorn through pip
+    shell: pip install flask gunicorn
+
+  - name: checkout vuln app from GitHub
+    git:
+      repo: https://github.com/lokori/flask-vuln.git
+      dest: /home/ubuntu/flask-vuln
+
+  - name: Generate FI locale
+    become: true
+    shell: locale-gen fi_FI.UTF-8 en_US.UTF-8
+
+  - name: Copy FI locale to make life easier
+    become: true
+    copy:
+      src: fi-locale
+      dest: /etc/default/locale
+      owner: root
+      group: root
+      mode: 0644

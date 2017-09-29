@@ -15,8 +15,21 @@ Or use ```run.sh```.
 
 Enjoy the puzzles at ```http://localhost:5000```
 
+# Running properly for other people
+
 If you run this for other people, somewhere, you should add ```--host=0.0.0.0``` to flask command parameters to listen for all IP addresses. Please understand that doing so puts the machine at risk where you run this application and take appropriate measures.
 
+## "Professional" setting
+
+Flask is a single-threaded development server. Which means it hangs and sucks in a workshop setting. 
+As a remedy, do something like this:
+
+1. Setup Ubuntu server on EC2, proper firewalls etc.
+2. Configure host ip for Ansible
+3. ```ansible-playbook playbook.yml -i hosts```
+4. ```run-gunicorn.sh```
+
+This runs it through [Gunicorn](http://gunicorn.org/) which is a better implementation for multi-threaded web server.
 
 # About vulnerability scanners
 
