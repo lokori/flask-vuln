@@ -1,0 +1,29 @@
+<html><body>Hark mortal!<br>
+This is <b>flask-vuln.py</b>, a simple target application for a hacking workshop. In each case, the vulnerable parameter is <i\><b>name</b></i>, unless specified otherwise.<br>
+  <script>                                                                                                                      
+     var msg = "Hello Brave Hacker! Your mission, should you choose to accept it, is to find and exploit vulnerabilities in this application. The links to challenges are provided here." +
+            "As always, should you or any of your Hacking Force be caught or killed, the Instructor will disavow any knowledge of your actions. This HTML document will not self-destruct in five/ten seconds. Good luck, Brave Hacker."; 
+     if (typeof(window.SpeechSynthesisUtterance) == 'undefined') {                                                                  
+      alert(msg)                                                                                                                   
+     } else {                                                                                                                       
+       var speecher = new SpeechSynthesisUtterance(msg);                                                                            
+       window.speechSynthesis.speak(speecher);                                                                                      
+     }                                                                                                                              
+
+     console.log('%c nice picture',
+  "background: #948382; color: #114dda; padding: 50em; background-image: url('http://testomanin.suosikki.on.kreacola.com/trumpse.jpg');");
+
+   </script>                                                                                                                      
+   <hr>                                                                                                                           
+      Do <i>alert(0)</i> to win, unless specified otherwise.                                                                         
+      <ul>                                                                                                                           
+      <li><a href="/xss1?a=k&name=Thor">Level 1: Helppoa kuin heinänteko!</a></li>                                                 
+      <li><a href="/xss2?a=k&name=Freyja">Level 2: Vasen käsi selän takana..</a></li>                                              
+      <li><a href="/xss3?a=k&name=Frigg">Level 3: Ei vieläkään vaikeaa..</a></li>                                                  
+      <li><a href="/xss4?a=k&name=Odin">Level 4: Joko hikoiluttaa?</a></li>                                                        
+      <li><a href="/xss5?a=k&name=Loki">Level 5: Loki the base master of deception</a></li>                                        
+      <li><a href="/mystery?name=http://localhost:5000">Mystery level</a></li>                                                     
+      <!-- <li><a href="/bonus?name=xss2.html">Hidden bonus level. <b>No alert(0)!</b>. Instead look for the deepest secret.</a></\
+li> -->  
+    </ul>                                                                                                                          
+    </body></html>  
