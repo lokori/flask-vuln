@@ -25,12 +25,8 @@ class VulnParse(xml.sax.handler.ContentHandler):
     print name,attrs
   
   def endElement(self, name):
-    if name=="To":
-      self.obj["To"] = self.chars
-    elif name=="Subject":
-      self.obj["Subject"] = self.chars
-    elif name=="Content":
-      self.obj["Content"] = self.chars
+    if name in set(['To','Subject','Content']):
+      self.obj[name] = self.chars
 
   def characters(self, content):
     self.chars += content
@@ -45,7 +41,16 @@ def process_xml(filename):
   return " SENT EMAIL: \r\n " + \
          " To: " + object["To"] + "\r\n" + \
          " Subject: " + object["Subject"] + "\r\n" + \
-         " Content: " + object["Content"] + "\r\n"
+         " Content: " + object["Content"] + "\r\n" + \
+         " URL for later reference: " + url_for('uploaded_file',filename=filename)
+
+def template(fname):
+  name=request.args.get('name','')
+  with open(fname, 'r') as myfile:
+    data=myfile.read().replace('\n', '')
+  content=re.sub('\$name', name, data)
+  return content
+
 
 @app.route('/upload', methods=['GET', 'POST'])
 def upload_file():
@@ -65,30 +70,12 @@ def upload_file():
         file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
         return process_xml(filename)
         # return redirect(url_for('uploaded_file',filename=filename))
-  return '''
-   <!doctype html>
-   <title>Send by import XML!</title>
-   <h1>Upload new File</h1>
-   <p>
-     XML elements: To, Subject, Content
-  </p>
-   <form method=post enctype=multipart/form-data>
-     <p><input type=file name=file>
-        <input type=submit value=Upload>
-   </form>
-   '''
+  return template('upload.html')
 
 @app.route('/uploads/<filename>')
 def uploaded_file(filename):
     return send_from_directory(app.config['UPLOAD_FOLDER'],
                                filename)
-
-def template(fname):
-  name=request.args.get('name','')
-  with open(fname, 'r') as myfile:
-    data=myfile.read().replace('\n', '')
-  content=re.sub('\$name', name, data)
-  return content
 
 @app.route("/")
 def xss():
