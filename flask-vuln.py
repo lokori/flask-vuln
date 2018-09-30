@@ -1,10 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from flask import Flask, request, redirect, url_for, send_from_directory
+from flask import Flask, request, redirect, url_for, send_from_directory, render_template, make_response
 from werkzeug.utils import secure_filename
 import re
 import os
 import xml.sax
+import base64
+import pickle
 
 UPLOAD_FOLDER = '.'
 ALLOWED_EXTENSIONS = set(['xml'])
@@ -135,6 +137,24 @@ def innermystery():
 def mystery():
   return redirect(request.args.get('name'), code=302)
 
+@app.route("/sessioncookie", methods = ['GET'])
+def sessioncookie():
+  class SessionClass:
+    authenticated = False
+
+  COOKIENAME = 'sessioncookie'
+  BASEDATA = SessionClass()
+  session_cookie = request.cookies.get(COOKIENAME)
+  if session_cookie:
+    try:
+      session_data = pickle.loads(base64.b64decode(session_cookie))
+    except (AttributeError, TypeError) as e:
+      session_data = BASEDATA
+  else:
+    session_data = BASEDATA
+  resp = make_response(render_template("sessioncookie.html", session_data=session_data))
+  resp.set_cookie(COOKIENAME, base64.b64encode(pickle.dumps(session_data)))
+  return resp
+
 if __name__ == "__main__":
       app.run(host='0.0.0.0')
-      
