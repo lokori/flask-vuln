@@ -13,6 +13,8 @@ Should you use it, please take note:
 
 Or use ```run.sh```.
 
+Or use ```run_docker.sh``` (which builds the image and starts a container). Remember to stop and remove the container after you're done.
+
 Enjoy the puzzles at ```http://localhost:5000```
 
 # Running properly for other people
